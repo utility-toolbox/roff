@@ -8,7 +8,7 @@ import setuptools
 from roff import __author__, __version__, __description__, __license__
 
 
-install_requires = []
+install_requires = ['markdown-it-py']
 
 all_requires = []
 
@@ -52,4 +52,9 @@ setuptools.setup(
     install_requires=install_requires,
     extras_require=extras_require,
     # test_suite="tests",
+    entry_points={
+        "console_scripts": [
+            "debuglib = debuglib.__main__:main"
+        ]
+    },
 )
