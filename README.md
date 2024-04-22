@@ -17,7 +17,7 @@ python-based cli to convert markdown to the roff (man-pages) format
 pip install roff
 ```
 
-> Tip: after the installation you should be able to see roff's manpage with `man roff` 
+> Tip: after the installation you should be able to see [roff's manpage](https://github.com/utility-toolbox/roff/blob/main/docs/roff.1.md) with `man roff` 
 
 ## Usage/Execution
 
@@ -25,6 +25,7 @@ pip install roff
 roff --help
 roff template command.1.md
 roff convert command.1.md
+man ./command.1
 ```
 
 ## Example
@@ -83,4 +84,4 @@ https://github.com/PlayerG9
 https://github.com/utility-toolbox/roff
 ````
 
-![example-manpage](README.assets/example-manpage.png)
+![example-manpage](https://github.com/utility-toolbox/roff/blob/main/README.assets/example-manpage.png?raw=true)
