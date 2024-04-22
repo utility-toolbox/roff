@@ -1,6 +1,7 @@
 # Project specific
 /.idea/
 /tmp/
+/docs/roff.1
 
 
 # Byte-compiled / optimized / DLL files
