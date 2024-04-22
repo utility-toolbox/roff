@@ -46,7 +46,8 @@ class Converter:
     def _add_head(self):
         self._stream.write(f".\\\" generated with roff/v{__version__}\n")
         self._stream.write(f".\\\" https://pypi.org/project/roff/{__version__}\n")
-        self._stream.write(f".\\\" https://github.com/utility-toolbox/roff/tree/{__version__}\n")
+        self._stream.write(f".\\\" https://github.com/utility-toolbox/roff/\n")
+        self._stream.write(f".\\\"\n")
 
     def _parse_children(self, children: t.List[markdown_it.tree.SyntaxTreeNode]) -> None:
         for child in children:
