@@ -17,6 +17,8 @@ python-based cli to convert markdown to the roff (man-pages) format
 pip install roff
 ```
 
+> Tip: after the installation you should be able to see roff's manpage with `man roff` 
+
 ## Usage/Execution
 
 ```shell
