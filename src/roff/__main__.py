@@ -12,7 +12,17 @@ parser.add_argument('-v', '--version', action='version', version='{}'.format(__v
 subparsers = parser.add_subparsers()
 
 
-template_parser = subparsers.add_parser('template')
+convert_parser = subparsers.add_parser('convert',
+                                       help="Converts markdown to roff")
+convert_parser.set_defaults(__cmd__=__cli__.convert.__cmd__)
+convert_parser.add_argument('source',
+                            help="Markdown file that should be parsed")
+convert_parser.add_argument('dest', nargs=ap.OPTIONAL,
+                            help="Manpage file that should be generated")
+
+
+template_parser = subparsers.add_parser('template',
+                                        help="Generates a Markdown file that you can fill")
 template_parser.set_defaults(__cmd__=__cli__.template.__cmd__)
 template_parser.add_argument('dest',
                              help="Target file that should be generated")

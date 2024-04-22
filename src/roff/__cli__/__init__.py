@@ -3,5 +3,6 @@ r"""
 
 """
 from . import (
-    template
+    convert,
+    template,
 )
