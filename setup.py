@@ -54,7 +54,10 @@ setuptools.setup(
     # test_suite="tests",
     entry_points={
         "console_scripts": [
-            "debuglib = debuglib.__main__:main"
+            "roff = roff.__main__:main"
         ]
     },
+    data_files=[
+        ("man/man1", ["docs/roff.1"]),
+    ],
 )
