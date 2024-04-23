@@ -11,23 +11,34 @@ roff(1) -- python-based cli to convert markdown to the roff (man-pages) format
 
 python-based cli to convert markdown to the roff (man-pages) format.
 
+Supported Markdown Features:
+- heading (h2-h4) (h1 is reserved for the head)
+- Flat Lists
+- code-blocks
+- inline-code
+- inline-bold
+- inline-italic
+
 ## OPTIONS
 
 ### `convert`
 
 > Converts markdown to roff
 
-* `source`:
+#### `source`:
 Markdown file that should be parsed
 
-* `[dest]`:
+#### `[dest]`:
 Manpage file
 
 ### `template`
 
 > Generates a Markdown file that you can fill
 
-* `dest`:
+#### `-y`, `--yes`:
+Overwrite file if it exists
+
+#### `dest`:
 Target file that should be generated
 
 ## BUGS
@@ -40,4 +51,8 @@ https://github.com/PlayerG9
 
 ## SEE ALSO
 
+### Organisation:
+https://github.com/utility-toolbox
+
+### Repository:
 https://github.com/utility-toolbox/roff
