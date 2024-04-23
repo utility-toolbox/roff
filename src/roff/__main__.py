@@ -1,12 +1,12 @@
 # -*- coding=utf-8 -*-
 r"""
-
+python-based cli to convert markdown to the roff (man-pages) format
 """
 import argparse as ap
 from . import __version__, __cli__
 
 
-parser = ap.ArgumentParser(prog='roff', formatter_class=ap.ArgumentDefaultsHelpFormatter)
+parser = ap.ArgumentParser(prog='roff', formatter_class=ap.ArgumentDefaultsHelpFormatter, description=__doc__)
 parser.set_defaults(__cmd__=parser.print_help)
 parser.add_argument('-v', '--version', action='version', version='{}'.format(__version__))
 subparsers = parser.add_subparsers()
