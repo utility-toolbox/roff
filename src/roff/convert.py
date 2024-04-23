@@ -26,8 +26,13 @@ def convert(source: str) -> str:
 
 
 class Converter:
+    _stream: io.StringIO
+    _had_head: bool
+    manpage_area: int
+
     def __init__(self, source: str) -> None:
         self._stream = io.StringIO()
+        self._had_head = False
 
         self.manpage_area = 1  # default. should be overwritten
 
@@ -39,6 +44,8 @@ class Converter:
         self._add_head()
         # print(root_node.pretty(show_text=True))
         self._parse_children(children=root_node.children)
+        if not self._had_head:
+            raise SyntaxError("Missing head")
 
     def getvalue(self) -> str:
         return self._stream.getvalue()
@@ -54,6 +61,8 @@ class Converter:
             self._parse_node(node=child)
 
     def _parse_node(self, node: markdown_it.tree.SyntaxTreeNode) -> None:
+        if not self._had_head and node.tag != 'h1':
+            raise SyntaxError("First element in the document should be the header")
         parser = getattr(self, f"_parse_{node.tag}", None)
         if parser is None:
             warnings.warn(f"Unsupported node tag '{node.tag}' of type '{node.type}'", RuntimeWarning)
@@ -92,6 +101,11 @@ class Converter:
 
     def _parse_h1(self, node: markdown_it.tree.SyntaxTreeNode) -> None:
         from datetime import date
+
+        if self._had_head:
+            raise SyntaxError("Duplicate Head detected")
+        self._had_head = True
+
         head_re = re.compile(r'^(?P<command>\w+)\\?\((?P<manpage_area>\d)\\?\) \\?-\\?- (?P<description>.+)$')
         content = self._parse_inline(node=node.children[0])
         match = head_re.search(content)
@@ -114,6 +128,9 @@ class Converter:
     def _parse_h3(self, node: markdown_it.tree.SyntaxTreeNode) -> None:
         self._stream.write(f'.SS "{self._parse_inline(node=node.children[0])}"\n')
 
+    def _parse_h4(self, node: markdown_it.tree.SyntaxTreeNode) -> None:
+        self._stream.write(f'.sp\n{self._parse_inline(node=node.children[0])}\n.br\n')
+
     def _parse_p(self, node: markdown_it.tree.SyntaxTreeNode) -> None:
         content = self._parse_inline(node=node.children[0])
         if not content.strip():
@@ -122,12 +139,22 @@ class Converter:
         self._stream.write(f'{content}\n')
 
     def _parse_ul(self, node: markdown_it.tree.SyntaxTreeNode) -> None:
-        self._parse_children(children=node.children)
-
-    def _parse_li(self, node: markdown_it.tree.SyntaxTreeNode) -> None:
+        r""" unordered list """
+        self._stream.write('.br\n')
         for child in node.children:
-            self._stream.write('.TP\n')
-            self._parse_node(node=child)
+            self._stream.write(f'*\n.RS 2\n')
+            self._parse_children(children=child.children)
+            self._stream.write(f'.RE\n')
+        self._stream.write('.br\n')
+
+    def _parse_ol(self, node: markdown_it.tree.SyntaxTreeNode) -> None:
+        r""" ordered list """
+        self._stream.write('.br\n')
+        for i, child in enumerate(node.children):
+            self._stream.write(f'{i+1}.\n.RS 2\n')
+            self._parse_children(children=child.children)
+            self._stream.write(f'.RE\n')
+        self._stream.write('.br\n')
 
     def _parse_blockquote(self, node: markdown_it.tree.SyntaxTreeNode) -> None:
         self._stream.write(f'.sp\n.RS 2\n')
