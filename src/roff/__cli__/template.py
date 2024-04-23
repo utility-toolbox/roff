@@ -40,6 +40,24 @@ def __cmd__(dest: str, *, yes: bool) -> None:
 * `-h`, `--help`:
 show the help message and exits
 
+## CONFIGURATION
+
+
+## ENVIRONMENT
+
+
+## FILES
+
+
+## VERSIONS
+
+
+## NOTES
+
+
+## EXAMPLE
+
+
 ## BUGS
 
 
