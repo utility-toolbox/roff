@@ -15,7 +15,7 @@ def __cmd__(dest: str, *, yes: bool) -> None:
     if dest.is_file() and not yes:
         response = input(f"'{dest!s}' already exists. Do you want to overwrite it? [Y/n] ")
         if response.lower() not in {'y', 'yes'}:
-            exit(1)
+            exit(0)
 
     command = dest.name.split('.', 1)[0]
     manpage_area = next((int(sfx[1]) for sfx in dest.suffixes if sfx[1:].isdigit() and len(sfx) == 2), 1)
