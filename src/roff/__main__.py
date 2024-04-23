@@ -24,6 +24,8 @@ convert_parser.add_argument('dest', nargs=ap.OPTIONAL,
 template_parser = subparsers.add_parser('template',
                                         help="Generates a Markdown file that you can fill")
 template_parser.set_defaults(__cmd__=__cli__.template.__cmd__)
+template_parser.add_argument('-y', '--yes', action='store_true',
+                             help="Overwrite file if it exists")
 template_parser.add_argument('dest',
                              help="Target file that should be generated")
 
