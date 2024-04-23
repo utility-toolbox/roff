@@ -25,7 +25,7 @@ Supported Markdown Features:
 
 ### `convert`
 
-> Converts markdown to roff
+> Converts markdown files to roff files
 
 #### `source`:
 Markdown file that should be parsed

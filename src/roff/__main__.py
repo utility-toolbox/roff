@@ -15,7 +15,7 @@ subparsers = parser.add_subparsers()
 
 
 convert_parser = subparsers.add_parser('convert',
-                                       help="Converts markdown to roff")
+                                       help="Converts markdown files to roff files")
 convert_parser.set_defaults(__cmd__=__cli__.convert.__cmd__)
 convert_parser.add_argument('source',
                             help="Markdown file that should be parsed")
