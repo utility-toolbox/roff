@@ -11,6 +11,8 @@ roff(1) -- python-based cli to convert markdown to the roff (man-pages) format
 
 python-based cli to convert markdown to the roff (man-pages) format.
 
+> see roff(1) for more information about the file specification
+
 Supported Markdown Features:
 - heading (h2-h4) (h1 is reserved for the head)
 - Flat Lists

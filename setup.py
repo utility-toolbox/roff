@@ -59,5 +59,6 @@ setuptools.setup(
     },
     data_files=[
         ("man/man1", ["docs/roff.1"]),
+        ("man/man5", ["docs/roff.5"]),
     ],
 )
