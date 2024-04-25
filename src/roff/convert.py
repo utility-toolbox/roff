@@ -34,7 +34,8 @@ class Converter:
     _root: Path
     manpage_area: int
 
-    WIDTH: t.ClassVar[int] = 80
+    width: int = int(os.getenv('ROFF_WIDTH', 80))
+    ascii: bool = os.getenv('ROFF_ASCII', "no").lower() in {"yes", "true", "1"}
 
     def __init__(self, fp: t.Union[str, os.PathLike]) -> None:
         self._stream = io.StringIO()
@@ -108,7 +109,7 @@ class Converter:
                 hyperref_re = re.compile(r'^\w+://')  # checks for http://, https://, data://, file://
                 if hyperref_re.match(href) is None:  # relative path to a file
                     href = f'file://{self._root.joinpath(href).absolute()}'  # make it absolute to our root directory
-                braille = render_image(url=href, max_dimensions=(self.WIDTH, self.WIDTH * 3))
+                braille = render_image(url=href, max_dimensions=(self.width, self.width * 3))
                 content = textwrap.indent(braille, '.br\n')  # ensure line-wraps
                 self._stream.write(f'.sp\n{content}\n.sp\n')
             else:
@@ -185,8 +186,8 @@ class Converter:
         self._stream.write(f'.sp\n.RS 2\n\\fI\n{content}\n\\fR\n.RE\n.sp\n')
 
     def _parse_hr(self, _node: markdown_it.tree.SyntaxTreeNode) -> None:
-        character = "-" if False else "━"
-        self._stream.write(f".br\n{character * self.WIDTH}\n.br\n")
+        character = "-" if self.ascii else "━"
+        self._stream.write(f".br\n{character * self.width}\n.br\n")
 
 
 def escape(text: str, *, _escapes: str = '"\'.\\') -> str:
