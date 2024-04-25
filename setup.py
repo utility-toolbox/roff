@@ -10,10 +10,14 @@ from roff import __author__, __version__, __description__, __license__
 
 install_requires = ['markdown-it-py']
 
-all_requires = []
+images_requires = ['pillow']
+images_svg_requires = [*images_requires, 'cairosvg']
+all_requires = [images_requires, images_svg_requires]
 
 extras_require = {
-    # 'all': all_requires,
+    'images': all_requires,
+    'images-svg': all_requires,
+    'all': all_requires,
 }
 
 setuptools.setup(

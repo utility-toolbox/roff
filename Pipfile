@@ -5,6 +5,8 @@ name = "pypi"
 
 [packages]
 markdown-it-py = "*"
+pillow = "*"
+cairosvg = "*"
 
 [dev-packages]
 twine = "*"
