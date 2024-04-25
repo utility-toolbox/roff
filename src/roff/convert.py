@@ -153,8 +153,8 @@ class Converter:
         content = self._parse_inline(node=node.children[0])
         if not content.strip():
             return
-        content = re.sub(r'\n{2,}', '\n.\n', content)
-        self._stream.write(f'{content}\n')
+        content = re.sub(r'\n{2,}', '\n.sp\n', content)
+        self._stream.write(f'.P\n{content}\n')
 
     def _parse_ul(self, node: markdown_it.tree.SyntaxTreeNode) -> None:
         r""" unordered list """
