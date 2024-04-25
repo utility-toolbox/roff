@@ -183,7 +183,7 @@ class Converter:
         content = re.sub(r'\n{2,}', '\n.sp\n', node.content.expandtabs(4).strip())
         content = textwrap.dedent(content)  # left-align
         content = textwrap.indent(content, prefix='.br\n')  # ensures newlines
-        self._stream.write(f'.sp\n.RS 2\n\\fI\n{content}\n\\fR\n.RE\n.sp\n')
+        self._stream.write(f'.sp\n.RS 2\n.EX\n\\fI\n{content}\n\\fR\n.EE\n.RE\n.sp\n')
 
     def _parse_hr(self, _node: markdown_it.tree.SyntaxTreeNode) -> None:
         character = "-" if self.ascii else "━"
