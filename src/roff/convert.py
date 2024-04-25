@@ -151,29 +151,28 @@ class Converter:
 
     def _parse_p(self, node: markdown_it.tree.SyntaxTreeNode) -> None:
         content = self._parse_inline(node=node.children[0])
-        if not content.strip():
-            return
         content = re.sub(r'\n{2,}', '\n.sp\n', content)
-        self._stream.write(f'.P\n{content}\n')
+        # self._stream.write(f'.P\n{content}\n')  # .P = Paragraph macro | destroys structure
+        self._stream.write(f'{content}\n')
 
     def _parse_ul(self, node: markdown_it.tree.SyntaxTreeNode) -> None:
         r""" unordered list """
-        self._stream.write('.br\n')
+        self._stream.write('.sp\n')
         bullet = '*' if self.ascii else '•'
         for child in node.children:
             self._stream.write(f'{bullet}\n.RS 2\n')
             self._parse_children(children=child.children)
             self._stream.write(f'.RE\n')
-        self._stream.write('.br\n')
+        self._stream.write('.sp\n')
 
     def _parse_ol(self, node: markdown_it.tree.SyntaxTreeNode) -> None:
         r""" ordered list """
-        self._stream.write('.br\n')
+        self._stream.write('.sp\n')
         for i, child in enumerate(node.children):
             self._stream.write(f'{i+1}.\n.RS 2\n')
             self._parse_children(children=child.children)
             self._stream.write(f'.RE\n')
-        self._stream.write('.br\n')
+        self._stream.write('.sp\n')
 
     def _parse_blockquote(self, node: markdown_it.tree.SyntaxTreeNode) -> None:
         self._stream.write(f'.sp\n.RS 2\n')
@@ -188,7 +187,7 @@ class Converter:
 
     def _parse_hr(self, _node: markdown_it.tree.SyntaxTreeNode) -> None:
         character = "-" if self.ascii else "━"
-        self._stream.write(f".br\n{character * self.width}\n.br\n")
+        self._stream.write(f".sp\n{character * self.width}\n.sp\n")
 
 
 def escape(text: str, *, _escapes: str = '"\'.\\') -> str:
