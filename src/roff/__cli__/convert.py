@@ -10,10 +10,7 @@ from ..convert import Converter
 def __cmd__(source: str, dest: t.Optional[str]) -> None:
     source = Path(source)
 
-    with open(source, 'r') as file:
-        markdown = file.read()
-
-    converter = Converter(markdown)
+    converter = Converter(fp=source)
 
     if dest is None:
         dest = source.with_suffix('').with_suffix(f".{converter.manpage_area}")

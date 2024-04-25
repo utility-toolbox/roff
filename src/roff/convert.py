@@ -8,6 +8,7 @@ import re
 import textwrap
 import warnings
 import typing as t
+from pathlib import Path
 import markdown_it.tree
 from . import __version__
 
@@ -15,30 +16,37 @@ from . import __version__
 __all__ = ['convert', 'Converter']
 
 
-def convert(source: str) -> str:
+def convert(fp: t.Union[str, os.PathLike]) -> str:
     r"""
     converts markdown to roff
 
-    :param source: markdown file content
+    :param fp: markdown file to convert
     :return: roff file content
     """
-    return Converter(source).getvalue()
+    return Converter(fp).getvalue()
 
 
 class Converter:
     _stream: io.StringIO
     _had_head: bool
+    _fp: Path
+    _root: Path
     manpage_area: int
 
     WIDTH: t.ClassVar[int] = 80
 
-    def __init__(self, source: str) -> None:
+    def __init__(self, fp: t.Union[str, os.PathLike]) -> None:
         self._stream = io.StringIO()
         self._had_head = False
+        self._fp = Path(fp).absolute()
+        self._root = self._fp.parent
 
-        self.manpage_area = 1  # default. should be overwritten
+        self.manpage_area = 1  # default. should be overwritten while parsing
 
         parser = markdown_it.MarkdownIt()
+
+        with open(self._fp, 'r') as file:
+            source = file.read()
 
         tokens = parser.parse(src=source)
         root_node = markdown_it.tree.SyntaxTreeNode(tokens=tokens, create_root=True)
