@@ -15,6 +15,8 @@ python-based cli to convert markdown to the roff (man-pages) format
 
 ```shell
 pip install roff
+pip install roff[images]  # support for images
+pip install roff[images-svg]  # support for svg-images
 ```
 
 > Tip: after the installation you should be able to see [roff's manpage](https://github.com/utility-toolbox/roff/blob/main/docs/roff.1.md) with `man roff` 
@@ -29,6 +31,12 @@ man ./command.1
 ```
 
 ## Example
+
+> [!WARNING]
+> This example is from a previous version and slightly outdated.
+
+<details>
+  <summary>Corresponding Markdown</summary>
 
 ````markdown
 roff(1) -- python-based cli to convert markdown to the roff (man-pages) format
@@ -83,5 +91,6 @@ https://github.com/PlayerG9
 
 https://github.com/utility-toolbox/roff
 ````
+</details>
 
 ![example-manpage](https://github.com/utility-toolbox/roff/blob/main/README.assets/example-manpage.png?raw=true)
