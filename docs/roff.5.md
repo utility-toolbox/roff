@@ -9,15 +9,106 @@ This document is about the .md file-specification
 
 ## FILES
 
+Input files should follow the naming convention of `command.area.md` (e.g. `roff.1.md`)
+
+Output files should follow the naming convention of `command.area` (e.g. `roff.1`)
+
+## ELEMENTS
+
+### Document Head
+
+The Document head should have the following structure and is required in the document
+
+```markdown
+command(1) -- description
+=============================================
+```
+
+### Sections
+
+```markdown
+## SECTION
+```
+
+### Subsections
+
+```markdown
+### SUBSECTION
+```
+
+### Subsubsections
+
+```markdown
+#### SUBSUBSECTION
+```
+
+### Unordered Lists
+
+```markdown
+- First Element
+- Second Element
+```
+
+### Ordered Lists
+
+```markdown
+1. First Element
+2. Second Element
+```
+
+### Blockquotes
+
+```markdown
+> You can simply add blockquotes by starting a line with `>`
+```
+
+### Code-Blocks
+
+````markdown
+```
+code-content
+```
+````
+
+### Inline/Text
+
+```markdown
+You can add `inline-code`, **bold** and *italic* code from markdown which are displayed in their own way
+```
+
+### Links
+
+```markdown
+Links are possible as reference (e.g. roff(1)) or via the markdown syntax (e.g. [repository](https://github.com/utiltiy-toolbox/roff))
+```
+
+### Images
+
+> Not supported yet
+
+### Separator
+
+> Not supported yet
+
 
 ## NOTES
 
 
 ## EXAMPLE
 
-```markdown
+````markdown
+command(1) -- @DESCRIPTION
+=============================================
 
-```
+## DESCRIPTION
+
+## OPTIONS
+
+### `subcommand`
+
+#### `-h`, `--help`:
+shows a help message and exists
+````
 
 ## BUGS
 
