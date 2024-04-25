@@ -159,8 +159,9 @@ class Converter:
     def _parse_ul(self, node: markdown_it.tree.SyntaxTreeNode) -> None:
         r""" unordered list """
         self._stream.write('.br\n')
+        bullet = '*' if self.ascii else '•'
         for child in node.children:
-            self._stream.write(f'*\n.RS 2\n')
+            self._stream.write(f'{bullet}\n.RS 2\n')
             self._parse_children(children=child.children)
             self._stream.write(f'.RE\n')
         self._stream.write('.br\n')
