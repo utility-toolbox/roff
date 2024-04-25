@@ -84,12 +84,18 @@ Links are possible as reference (e.g. roff(1)) or via the markdown syntax (e.g. 
 
 ### Images
 
-> Not supported yet
+requires `roff[images]` or `roff[images-svg]`
+
+```markdown
+![alt](asset.png)
+![alt](https://server.com/asset.png)
+```
 
 ### Separator
 
-> Not supported yet
-
+```markdown
+---
+```
 
 ## NOTES
 
