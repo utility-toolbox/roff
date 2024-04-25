@@ -11,6 +11,7 @@ import typing as t
 from pathlib import Path
 import markdown_it.tree
 from . import __version__
+from ._images import render_image
 
 
 __all__ = ['convert', 'Converter']
@@ -102,8 +103,14 @@ class Converter:
                     chunks.append(escape(text))
                 else:
                     chunks.append(f'\n.UR {href}\n{escape(text)}\n.UE')
-            # elif child.type == 'image':
-            #     pass  # todo: `pip install roff[image]` with Pillow
+            elif child.type == 'image':
+                href = child.attrGet('src')
+                hyperref_re = re.compile(r'^\w+://')  # checks for http://, https://, data://, file://
+                if hyperref_re.match(href) is None:  # relative path to a file
+                    href = f'file://{self._root.joinpath(href).absolute()}'  # make it absolute to our root directory
+                braille = render_image(url=href, max_dimensions=(self.WIDTH, self.WIDTH * 3))
+                content = textwrap.indent(braille, '.br\n')  # ensure line-wraps
+                self._stream.write(f'.sp\n{content}\n.sp\n')
             else:
                 warnings.warn(f"Unsupported inline node tag '{child.tag}' of type '{child.type}'", RuntimeWarning)
 
