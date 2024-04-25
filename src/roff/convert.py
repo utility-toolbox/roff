@@ -30,6 +30,8 @@ class Converter:
     _had_head: bool
     manpage_area: int
 
+    WIDTH: t.ClassVar[int] = 80
+
     def __init__(self, source: str) -> None:
         self._stream = io.StringIO()
         self._had_head = False
@@ -67,7 +69,7 @@ class Converter:
         if parser is None:
             warnings.warn(f"Unsupported node tag '{node.tag}' of type '{node.type}'", RuntimeWarning)
             return
-        parser(node=node)
+        parser(node)
 
     def _parse_inline(self, node: markdown_it.tree.SyntaxTreeNode) -> str:
         chunks = []
@@ -166,6 +168,10 @@ class Converter:
         content = textwrap.dedent(content)  # left-align
         content = textwrap.indent(content, prefix='.br\n')  # ensures newlines
         self._stream.write(f'.sp\n.RS 2\n\\fI\n{content}\n\\fR\n.RE\n.sp\n')
+
+    def _parse_hr(self, _node: markdown_it.tree.SyntaxTreeNode) -> None:
+        character = "-" if False else "━"
+        self._stream.write(f".br\n{character * self.WIDTH}\n.br\n")
 
 
 def escape(text: str, *, _escapes: str = '"\'.\\') -> str:
