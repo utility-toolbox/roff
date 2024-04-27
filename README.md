@@ -5,6 +5,7 @@ python-based cli to convert markdown to the roff (man-pages) format
 * [roff](#roff)
   * [Installation](#installation)
   * [Usage/Execution](#usageexecution)
+  * [File Format](#file-format)
   * [Example](#example)
 <!-- TOC -->
 
@@ -29,6 +30,22 @@ roff template command.1.md
 roff convert command.1.md
 man ./command.1
 ```
+
+## File Format
+
+`roff` uses markdown as the file format. It supports all commonmark markdown features (headers are limited to h2-h4).
+
+Additionally, roff brings 1 own markdown-feature, the `inline-command`!
+By prepending your inline-code with a `$` sign it gets recognised as an inline-command and rendered in a more special way.
+
+```markdown
+$`command subcommand [--arg value] file...`
+```
+
+![example: inline-command](README.assets/example-inline-command.png)
+
+> [!TIP]
+> Use `roff template command.1.md` to get a pre-filled markdown file as a starting point.
 
 ## Example
 
@@ -93,4 +110,4 @@ https://github.com/utility-toolbox/roff
 ````
 </details>
 
-![example-manpage](https://github.com/utility-toolbox/roff/blob/main/README.assets/example-manpage.png?raw=true)
+![example: manpage](https://github.com/utility-toolbox/roff/blob/main/README.assets/example-manpage.png?raw=true)
