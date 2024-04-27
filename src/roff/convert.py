@@ -11,7 +11,9 @@ import typing as t
 from pathlib import Path
 import markdown_it.tree
 from . import __version__
+from ._util import *
 from ._images import render_image
+from ._markdown import markdown_plugin_command
 
 
 __all__ = ['convert', 'Converter']
@@ -46,6 +48,7 @@ class Converter:
         self.manpage_area = 1  # default. should be overwritten while parsing
 
         parser = markdown_it.MarkdownIt()
+        parser.use(markdown_plugin_command)
 
         with open(self._fp, 'r') as file:
             source = file.read()
@@ -111,11 +114,32 @@ class Converter:
                     href = f'file://{self._root.joinpath(href).absolute()}'  # make it absolute to our root directory
                 braille = render_image(url=href, max_dimensions=(self.width, self.width * 3))
                 content = textwrap.indent(braille, '.br\n')  # ensure line-wraps
-                self._stream.write(f'.sp\n{content}\n.sp\n')
+                chunks.append(f'.sp\n{content}\n.sp\n')
+            elif child.type == 'command_inline':  # custom through plugin
+                chunks.append(self._render_inline_command(command=child.content))
             else:
                 warnings.warn(f"Unsupported inline node tag '{child.tag}' of type '{child.type}'", RuntimeWarning)
 
         return ''.join(chunks)
+
+    @staticmethod
+    def _render_inline_command(command: str) -> str:
+        command = command.strip()
+
+        def repl(match: re.Match) -> str:
+            head = match.group('head')
+            if head is not None:
+                return f'\\fB{escape(head)}\\fP'
+            argkey = match.group('argkey')
+            if argkey:
+                argvalue = match.group('argvalue')
+                if argvalue:
+                    return f'[\\fB{escape(argkey)}\\fP \\fI{escape(argvalue)}\\fP]'
+                else:
+                    return f'[\\fB{escape(argkey)}\\fP]'
+            return f'\\fI{escape(match.group())}\\fP'
+
+        return re.sub(r'^(?P<head>\w+)|\[(?P<argkey>--?\w+)(?: (?P<argvalue>\w+))?]|(\w+)', repl, command)
 
     def _parse_h1(self, node: markdown_it.tree.SyntaxTreeNode) -> None:
         from datetime import date
@@ -183,15 +207,8 @@ class Converter:
         content = re.sub(r'\n{2,}', '\n.sp\n', node.content.expandtabs(4).strip())
         content = textwrap.dedent(content)  # left-align
         content = textwrap.indent(content, prefix='.br\n')  # ensures newlines
-        self._stream.write(f'.sp\n.RS 2\n.EX\n\\fI\n{content}\n\\fR\n.EE\n.RE\n.sp\n')
+        self._stream.write(f'.sp\n.RS 2\n.EX\n\\fI\n{content}\n\\fP\n.EE\n.RE\n.sp\n')
 
     def _parse_hr(self, _node: markdown_it.tree.SyntaxTreeNode) -> None:
         character = "-" if self.ascii else "━"
         self._stream.write(f".sp\n{character * self.width}\n.sp\n")
-
-
-def escape(text: str, *, _escapes: str = '"\'.\\') -> str:
-    return text.translate(str.maketrans({
-        c: f"\\{c}"
-        for c in _escapes
-    }))
