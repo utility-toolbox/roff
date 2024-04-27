@@ -1,6 +1,8 @@
 # roff
 python-based cli to convert markdown to the roff (man-pages) format
 
+![roff-manpage head](https://github.com/utility-toolbox/roff/blob/main/README.assets/roff-manpage-head.png?raw=true)
+
 <!-- TOC -->
 * [roff](#roff)
   * [Installation](#installation)
@@ -20,7 +22,9 @@ pip install roff[images]  # support for images
 pip install roff[images-svg]  # support for svg-images
 ```
 
-> Tip: after the installation you should be able to see [roff's manpage](https://github.com/utility-toolbox/roff/blob/main/docs/roff.1.md) with `man roff` 
+> [!TIP] 
+> After the installation you should be able to see [roff's manpage](https://github.com/utility-toolbox/roff/blob/main/docs/roff.1.md) with `man roff`
+> or the file format information with `man roff.5`.
 
 ## Usage/Execution
 
@@ -49,65 +53,6 @@ $`command subcommand [--arg value] file...`
 
 ## Example
 
-> [!WARNING]
-> This example is from a previous version and slightly outdated.
+The following image shows the manpage of roff itself 
 
-<details>
-  <summary>Corresponding Markdown</summary>
-
-````markdown
-roff(1) -- python-based cli to convert markdown to the roff (man-pages) format
-=============================================
-
-## SYNOPSIS
-
-- `roff [-h] [-v] {convert,template} ...`
-- `roff convert [-h] source [dest]`
-- `roff template [-h] dest`
-
-## DESCRIPTION
-
-python-based cli to convert markdown to the roff (man-pages) format.  
-nextline
-
-  indented
-
-> blockquote
-
-```python
-import roff
-
-with roff.Converter():
-    print("Hey")
-```
-
-## OPTIONS
-
-### `convert`
-
-* `source`:
-Markdown file that should be parsed
-
-* `[dest]`:
-Manpage file
-
-### `template`
-
-* `dest`:
-Target file that should be generated
-
-## BUGS
-
-**bold**, _italic_, [link](#BUGS)
-
-## AUTHOR
-
-https://github.com/PlayerG9
-
-## SEE ALSO
-
-https://github.com/utility-toolbox/roff
-````
-</details>
-
-![example: manpage](https://github.com/utility-toolbox/roff/blob/main/README.assets/example-manpage.png?raw=true)
+![example: manpage](https://github.com/utility-toolbox/roff/blob/main/README.assets/roff-manpage.png?raw=true)
