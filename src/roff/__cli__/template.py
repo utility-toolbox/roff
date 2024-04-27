@@ -26,7 +26,7 @@ def __cmd__(dest: str, *, yes: bool) -> None:
 
 ## SYNOPSIS
 
-- `{command} [-h]`
+- $`{command} [-h]`
 
 ## DESCRIPTION
 
