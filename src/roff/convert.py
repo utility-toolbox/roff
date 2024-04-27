@@ -91,11 +91,11 @@ class Converter:
             if child.type == 'text':
                 chunks.append(escape(child.content))
             elif child.type == 'code_inline':
-                chunks.append(f'\\fB{child.content}\\fP')
+                chunks.append(f'\\fI{child.content}\\fP')
             elif child.type == 'strong':
                 chunks.append(f'\\fB{self._parse_inline(node=child)}\\fP')
             elif child.type == 'em':
-                chunks.append(f'\\fI{self._parse_inline(node=child)}\\fR')
+                chunks.append(f'\\fI{self._parse_inline(node=child)}\\fP')
             elif child.type == 'softbreak':
                 chunks.append('\n.br\n')
             elif child.type == 'hardbreak':
@@ -137,9 +137,13 @@ class Converter:
                     return f'[\\fB{escape(argkey)}\\fP \\fI{escape(argvalue)}\\fP]'
                 else:
                     return f'[\\fB{escape(argkey)}\\fP]'
-            return f'\\fI{escape(match.group())}\\fP'
+            argument = match.group()
+            if argument.startswith("-"):
+                return f'\\fB{escape(argument)}\\fP'
+            else:
+                return f'\\fI{escape(argument)}\\fP'
 
-        return re.sub(r'^(?P<head>\w+)|\[(?P<argkey>--?\w+)(?: (?P<argvalue>\w+))?]|(\w+)', repl, command)
+        return re.sub(r'^(?P<head>\w+)|\[(?P<argkey>--?\w+)(?: (?P<argvalue>\w+))?]|(-{0,2}\w+)', repl, command)
 
     def _parse_h1(self, node: markdown_it.tree.SyntaxTreeNode) -> None:
         from datetime import date
