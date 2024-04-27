@@ -7,11 +7,13 @@ see roff(1) for more information about the CLI.
 
 This document is about the .md file-specification
 
+> Use $`roff template command.1.md` to get a template as a starting point.
+
 ## FILES
 
-Input files should follow the naming convention of `command.area.md` (e.g. `roff.1.md`)
+Input files should follow the naming convention of `[command].[area].md` (e.g. `roff.1.md`)
 
-Output files should follow the naming convention of `command.area` (e.g. `roff.1`)
+Output files should follow the naming convention of `[command].[area]` (e.g. `roff.1`)
 
 ## ELEMENTS
 

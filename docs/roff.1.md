@@ -3,9 +3,9 @@ roff(1) -- python-based cli to convert markdown to the roff (man-pages) format
 
 ## SYNOPSIS
 
-- `roff [-h] [-v] {convert,template} ...`
-- `roff convert [-h] source [dest]`
-- `roff template [-h] dest`
+- $`roff [-h] [-v] {convert,template} ...`
+- $`roff convert [-h] source [dest]`
+- $`roff template [-h] dest`
 
 ## DESCRIPTION
 
@@ -15,7 +15,7 @@ python-based cli to convert markdown to the roff (man-pages) format.
 
 Support for all* Markdown features:
 
-> *h1 is reserved for the head and h5 & h6 are not allowed.
+> *h1 is reserved for the head and h5 & h6 are not allowed/rendered.
 
 - heading (h2-h4)
 - Ordered Lists
@@ -31,7 +31,7 @@ Support for all* Markdown features:
 
 ## OPTIONS
 
-### `convert`
+### $`roff convert`
 
 > Converts markdown files to roff files
 
@@ -41,7 +41,7 @@ Markdown file that should be parsed
 #### `[dest]`:
 Manpage file
 
-### `template`
+### $`roff template`
 
 > Generates a Markdown file that you can fill
 
