@@ -84,7 +84,7 @@ class Converter:
             return
         parser(node)
 
-    def _parse_inline(self, node: markdown_it.tree.SyntaxTreeNode) -> str:
+    def _render_inline(self, node: markdown_it.tree.SyntaxTreeNode) -> str:
         chunks = []
 
         for child in node.children:
@@ -93,16 +93,16 @@ class Converter:
             elif child.type == 'code_inline':
                 chunks.append(f'\\fI{child.content}\\fP')
             elif child.type == 'strong':
-                chunks.append(f'\\fB{self._parse_inline(node=child)}\\fP')
+                chunks.append(f'\\fB{self._render_inline(node=child)}\\fP')
             elif child.type == 'em':
-                chunks.append(f'\\fI{self._parse_inline(node=child)}\\fP')
+                chunks.append(f'\\fI{self._render_inline(node=child)}\\fP')
             elif child.type == 'softbreak':
-                chunks.append('\n.br\n')
+                chunks.append(' ')
             elif child.type == 'hardbreak':
-                chunks.append('\n.br\n.br\n')
+                chunks.append('\n.br\n')
             elif child.type == 'link':
                 href = child.attrGet('href')
-                text = self._parse_inline(node=child)
+                text = self._render_inline(node=child)
                 if href == text:
                     chunks.append(escape(text))
                 else:
@@ -153,7 +153,7 @@ class Converter:
         self._had_head = True
 
         head_re = re.compile(r'^(?P<command>\w+)\\?\((?P<manpage_area>\d)\\?\) \\?-\\?- (?P<description>.+)$')
-        content = self._parse_inline(node=node.children[0])
+        content = self._render_inline(node=node.children[0])
         match = head_re.search(content)
         if match is None:
             raise SyntaxError("Unsupported format of head. (expected 'command(1) -- description')")
@@ -169,38 +169,70 @@ class Converter:
         self._stream.write(f'\\fB{command}\\fP \\- {match.group("description")}\n')
 
     def _parse_h2(self, node: markdown_it.tree.SyntaxTreeNode) -> None:
-        self._stream.write(f'.SH "{self._parse_inline(node=node.children[0])}"\n')
+        self._stream.write(f'.SH "{self._render_inline(node=node.children[0])}"\n')
 
     def _parse_h3(self, node: markdown_it.tree.SyntaxTreeNode) -> None:
-        self._stream.write(f'.SS "{self._parse_inline(node=node.children[0])}"\n')
+        self._stream.write(f'.SS "{self._render_inline(node=node.children[0])}"\n')
 
     def _parse_h4(self, node: markdown_it.tree.SyntaxTreeNode) -> None:
-        self._stream.write(f'.sp\n{self._parse_inline(node=node.children[0])}\n.br\n')
+        self._stream.write(f'.sp\n{self._render_inline(node=node.children[0])}\n.br\n')
 
     def _parse_p(self, node: markdown_it.tree.SyntaxTreeNode) -> None:
-        content = self._parse_inline(node=node.children[0])
+        content = self._render_inline(node=node.children[0])
         content = re.sub(r'\n{2,}', '\n.sp\n', content)
         # self._stream.write(f'.P\n{content}\n')  # .P = Paragraph macro | destroys structure
         self._stream.write(f'{content}\n')
 
+    def _check_inline_text_list(self, node: markdown_it.tree.SyntaxTreeNode) -> bool:
+        r""" Better do not touch this function. It's a mess. But at least it works """
+        assert node.tag in {'ul', 'ol'}
+        return all((
+            (len(li.children)  # any children
+             and li.children[0].type == 'paragraph'  # first is paragraph
+             and len(li.children[0].children) == 1  # with one child
+             and li.children[0].children[0].type == 'inline'  # which is inline
+             and '\n' not in self._render_inline(node=li.children[0].children[0]))  # and not over multiple lines
+            for li in node.children
+        ))
+
     def _parse_ul(self, node: markdown_it.tree.SyntaxTreeNode) -> None:
         r""" unordered list """
-        self._stream.write('.sp\n')
+        deep = bool(node.level)
+        self._stream.write('.br\n' if deep else '.sp\n')
         bullet = '*' if self.ascii else '•'
-        for child in node.children:
-            self._stream.write(f'{bullet}\n.RS 2\n')
-            self._parse_children(children=child.children)
-            self._stream.write(f'.RE\n')
-        self._stream.write('.sp\n')
+        if self._check_inline_text_list(node=node):
+            for list_item in node.children:
+                head, *body = list_item.children
+                self._stream.write(f'{bullet} {self._render_inline(head.children[0])}\n.br\n')
+                if body:
+                    self._stream.write('.RS 2\n')
+                    self._parse_children(children=body)
+                    self._stream.write('.RE\n')
+        else:
+            for list_item in node.children:
+                self._stream.write(f'{bullet}\n.RS 2\n')
+                self._parse_children(children=list_item.children)
+                self._stream.write(f'.RE\n')
+        self._stream.write('.br\n' if deep else '.sp\n')
 
     def _parse_ol(self, node: markdown_it.tree.SyntaxTreeNode) -> None:
         r""" ordered list """
-        self._stream.write('.sp\n')
-        for i, child in enumerate(node.children):
-            self._stream.write(f'{i+1}.\n.RS 2\n')
-            self._parse_children(children=child.children)
-            self._stream.write(f'.RE\n')
-        self._stream.write('.sp\n')
+        deep = bool(node.level)
+        self._stream.write('.br\n' if deep else '.sp\n')
+        if self._check_inline_text_list(node=node):
+            for i, list_item in enumerate(node.children):
+                head, *body = list_item.children
+                self._stream.write(f'{i+1}. {self._render_inline(head.children[0])}\n.br\n')
+                if body:
+                    self._stream.write('.RS 2\n')
+                    self._parse_children(children=body)
+                    self._stream.write('.RE\n')
+        else:
+            for i, list_item in enumerate(node.children):
+                self._stream.write(f'{i+1}.\n.RS 2\n')
+                self._parse_children(children=list_item.children)
+                self._stream.write(f'.RE\n')
+        self._stream.write('.br\n' if deep else '.sp\n')
 
     def _parse_blockquote(self, node: markdown_it.tree.SyntaxTreeNode) -> None:
         self._stream.write(f'.sp\n.RS 2\n')
