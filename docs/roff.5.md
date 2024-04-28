@@ -26,6 +26,12 @@ command(1) -- description
 =============================================
 ```
 
+> Because h1 is reserved for the head you are not allowed to use `#` in your files
+> 
+> ```markdown
+> # SECTION
+> ```
+
 ### Sections
 
 ```markdown
@@ -42,6 +48,8 @@ command(1) -- description
 
 ```markdown
 #### SUBSUBSECTION
+##### SUBSUBSECTION
+###### SUBSUBSECTION
 ```
 
 ### Unordered Lists

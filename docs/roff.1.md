@@ -15,9 +15,9 @@ python-based cli to convert markdown to the roff (man-pages) format.
 
 Support for all* Markdown features:
 
-> *h1 is reserved for the head and h5 & h6 are not allowed/rendered.
+> *h1 is reserved for the head.
 
-- heading (h2-h4)
+- heading (h2-h6)
 - Ordered Lists
 - Unordered Lists
 - Code-Blocks

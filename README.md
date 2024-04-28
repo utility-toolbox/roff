@@ -37,7 +37,7 @@ man ./command.1
 
 ## File Format
 
-`roff` uses markdown as the file format. It supports all commonmark markdown features (headers are limited to h2-h4).
+`roff` uses markdown as the file format. It supports all commonmark markdown features (h1 is reserved for the head).
 
 Additionally, roff brings 1 own markdown-feature, the `inline-command`!
 By prepending your inline-code with a `$` sign it gets recognised as an inline-command and rendered in a more special way.

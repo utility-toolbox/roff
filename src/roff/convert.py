@@ -175,7 +175,11 @@ class Converter:
         self._stream.write(f'.SS "{self._render_inline(node=node.children[0])}"\n')
 
     def _parse_h4(self, node: markdown_it.tree.SyntaxTreeNode) -> None:
-        self._stream.write(f'.sp\n{self._render_inline(node=node.children[0])}\n.br\n')
+        self._stream.write(f'.sp\n{self._render_inline(node=node.children[0])}\n.sp\n')
+
+    # maybe not the best solution
+    _parse_h5 = _parse_h4
+    _parse_h6 = _parse_h4
 
     def _parse_p(self, node: markdown_it.tree.SyntaxTreeNode) -> None:
         content = self._render_inline(node=node.children[0])
