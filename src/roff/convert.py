@@ -197,7 +197,7 @@ class Converter:
 
     def _parse_ul(self, node: markdown_it.tree.SyntaxTreeNode) -> None:
         r""" unordered list """
-        deep = bool(node.level)
+        deep = node.level > 0
         self._stream.write('.br\n' if deep else '.sp\n')
         bullet = '*' if self.ascii else '•'
         if self._check_inline_text_list(node=node):
@@ -217,7 +217,7 @@ class Converter:
 
     def _parse_ol(self, node: markdown_it.tree.SyntaxTreeNode) -> None:
         r""" ordered list """
-        deep = bool(node.level)
+        deep = node.level > 0
         self._stream.write('.br\n' if deep else '.sp\n')
         if self._check_inline_text_list(node=node):
             for i, list_item in enumerate(node.children):
