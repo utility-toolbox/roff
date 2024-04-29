@@ -143,7 +143,12 @@ class Converter:
             else:
                 return f'\\fI{escape(argument)}\\fP'
 
-        return re.sub(r'^(?P<head>\w+)|\[(?P<argkey>--?\w+)(?: (?P<argvalue>\w+))?]|(-{0,2}\w+)', repl, command)
+        patterns_re = re.compile(r'^(?P<head>\w[\w-]*)'  # ^command
+                                 r'|\[(?P<argkey>--?\w[\w-]*)(?: (?P<argvalue>\w[\w-]*))?]'  # [--key value]
+                                 r'|(?P<quote>[\"\']).*?(?P=quote)'  # "longer text's"
+                                 r'|(-{0,2}\w[\w-]*)')  # other stuff
+
+        return patterns_re.sub(repl, command)
 
     def _parse_h1(self, node: markdown_it.tree.SyntaxTreeNode) -> None:
         from datetime import date
