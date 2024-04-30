@@ -143,10 +143,10 @@ class Converter:
             else:
                 return f'\\fI{escape(argument)}\\fP'
 
-        patterns_re = re.compile(r'^(?P<head>\w[\w-]*)'  # ^command
-                                 r'|\[(?P<argkey>--?\w[\w-]*)(?: (?P<argvalue>\w[\w-]*))?]'  # [--key value]
+        patterns_re = re.compile(r'^(?P<head>\w[\w\-]*)'  # ^command
+                                 r'|\[(?P<argkey>--?\w[\w-]*)(?: (?P<argvalue>\w[\w\-]*))?]'  # [--key value]
                                  r'|(?P<quote>[\"\']).*?(?P=quote)'  # "longer text's"
-                                 r'|(-{0,2}\w[\w-]*)')  # other stuff
+                                 r'|(-{0,2}\w[\w\-]*)')  # other stuff
 
         return patterns_re.sub(repl, command)
 
