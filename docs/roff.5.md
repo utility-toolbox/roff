@@ -7,7 +7,7 @@ see roff(1) for more information about the CLI.
 
 This document is about the .md file-specification
 
-> Use $`roff template command.1.md` to get a template as a starting point.
+> Use $`roff template 'command.1.md'` to get a template as a starting point.
 
 ## FILES
 
