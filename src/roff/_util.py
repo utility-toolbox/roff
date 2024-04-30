@@ -19,14 +19,14 @@ def get_parser() -> 'markdown_it.MarkdownIt':
 
 ESCAPE_RULES = {
     re.compile(r'\\'): r"\\\\",  # backslash
-    re.compile(r'\''): r"\[aq]",  # apostrophe
-    re.compile(r'\"'): r"\[dq]",  # double-quotation
-    re.compile(r'(?<=\d)-(?=\d)'): r"\[en]",  # en-dash
-    re.compile(r'(?<=\w)-(?=\w)'): r"\[em]",  # em-dash
-    re.compile(r'`'): r"\[ga]",  # grave accent
-    re.compile(r'\^'): r"\[ha]",  # circumflex accent
-    re.compile(r'~'): r"\[ti]",  # tilde
-    re.compile(r'-'): r"\-",  # minus sign
+    re.compile(r'\''): r"\\[aq]",  # apostrophe
+    re.compile(r'\"'): r"\\[dq]",  # double-quotation
+    re.compile(r'(?<=\d)-(?=\d)'): r"\\[en]",  # en-dash
+    re.compile(r'(?<=\w)-(?=\w)'): r"\\[em]",  # em-dash
+    re.compile(r'`'): r"\\[ga]",  # grave accent
+    re.compile(r'\^'): r"\\[ha]",  # circumflex accent
+    re.compile(r'~'): r"\\[ti]",  # tilde
+    re.compile(r'-'): r"\\-",  # minus sign
 }
 
 
