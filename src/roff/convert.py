@@ -13,7 +13,6 @@ import markdown_it.tree
 from . import __version__
 from ._util import *
 from ._images import render_image
-from ._markdown import markdown_plugin_command
 
 
 __all__ = ['convert', 'Converter']
@@ -47,8 +46,7 @@ class Converter:
 
         self.manpage_area = 1  # default. should be overwritten while parsing
 
-        parser = markdown_it.MarkdownIt()
-        parser.use(markdown_plugin_command)
+        parser = get_parser()
 
         with open(self._fp, 'r') as file:
             source = file.read()
