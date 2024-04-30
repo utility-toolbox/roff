@@ -10,7 +10,7 @@ class ActionListManpageAreas(ap.Action):
         super().__init__(option_strings=option_strings, nargs=0, help=help, metavar=metavar,
                          dest=ap.SUPPRESS, default=ap.SUPPRESS)
 
-    def __call__(self, *args, **kwargs):
+    def __call__(self, parser: ap.ArgumentParser, *args, **kwargs):
         print("1. general commands")
         print("2. system calls")
         print("3. library functions")
@@ -19,4 +19,4 @@ class ActionListManpageAreas(ap.Action):
         print("6. games and screensavers")
         print("7. miscellanea")
         print("8. system administration commands and daemons")
-        exit(0)
+        parser.exit(0)
