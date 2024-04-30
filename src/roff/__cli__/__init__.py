@@ -5,6 +5,7 @@ r"""
 from . import (
     convert,
     template,
+    tree,
     ###########
     util,
 )
