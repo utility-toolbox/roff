@@ -254,11 +254,13 @@ class Converter:
         self._stream.write('.br\n' if deep else '.sp\n')
 
     def _parse_blockquote(self, node: markdown_it.tree.SyntaxTreeNode) -> None:
+        # todo: prefix each line with '|' somehow
         self._stream.write(f'.sp\n.RS 2\n')
         self._parse_children(children=node.children)
         self._stream.write(f'.RE\n.sp\n')
 
     def _parse_code(self, node: markdown_it.tree.SyntaxTreeNode) -> None:
+        # todo: add line number at the start? (if lang is set?)
         content = re.sub(r'\n{2,}', '\n.sp\n', node.content.expandtabs(4).strip())
         content = textwrap.dedent(content)  # left-align
         content = textwrap.indent(content, prefix='.br\n')  # ensures newlines
