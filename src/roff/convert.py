@@ -35,6 +35,7 @@ class Converter:
     _root: Path
     manpage_area: int
 
+    # yes. I know that 80 won't fit the default terminal size of 80 because the section offset
     width: int = int(os.getenv('ROFF_WIDTH', 80))
     ascii: bool = os.getenv('ROFF_ASCII', "no").lower() in {"yes", "true", "1"}
 
@@ -191,6 +192,15 @@ class Converter:
         #     self._stream.write('.P\n')
         self._stream.write(f'{content}\n')
 
+    @staticmethod
+    def _check_newline(text: str) -> bool:
+        r""" checks the output of _render_inline if it won't fit into one line """
+        return (
+            # len(text) >= self.width  # won't fit in one line (good in theory. bad in praxis)
+            '\n.br\n' in text  # line-break
+            or '\n.sp\n' in text  # vertical space
+        )
+
     def _check_inline_text_list(self, node: markdown_it.tree.SyntaxTreeNode) -> bool:
         r""" Better do not touch this function. It's a mess. But at least it works """
         assert node.tag in {'ul', 'ol'}
@@ -199,8 +209,9 @@ class Converter:
              and li.children[0].type == 'paragraph'  # first is paragraph
              and len(li.children[0].children) == 1  # with one child
              and li.children[0].children[0].type == 'inline'  # which is inline
-             and '\n' not in self._render_inline(node=li.children[0].children[0]))  # and not over multiple lines
-            for li in node.children
+             and not self._check_newline(
+                        self._render_inline(node=li.children[0].children[0])  # and not over multiple lines
+            )) for li in node.children
         ))
 
     def _parse_ul(self, node: markdown_it.tree.SyntaxTreeNode) -> None:
