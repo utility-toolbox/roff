@@ -63,7 +63,7 @@ def render_image(url: str, max_dimensions: t.Tuple[int, int] = (80, 500)) -> str
 
     if maintype != 'image':
         raise TypeError(f"unsupported content type: '{content_type}'")
-    if subtype == 'svg':
+    if subtype == 'svg+xml':
         if cairosvg is None:
             raise RuntimeError("svg-image rendering is not supported (`pip3 install roff[images-svg]`)")
         buffer = io.BytesIO()
