@@ -260,11 +260,19 @@ class Converter:
         self._stream.write(f'.RE\n.sp\n')
 
     def _parse_code(self, node: markdown_it.tree.SyntaxTreeNode) -> None:
-        # todo: add line number at the start? (if lang is set?)
-        content = re.sub(r'\n{2,}', '\n.sp\n', node.content.expandtabs(4).strip())
+        content = node.content.expandtabs(4).strip()
         content = textwrap.dedent(content)  # left-align
-        content = textwrap.indent(content, prefix='.br\n')  # ensures newlines
-        self._stream.write(f'.sp\n.RS 2\n.EX\n\\fI\n{content}\n\\fP\n.EE\n.RE\n.sp\n')
+        if node.info in {'', 'text', 'txt'}:  # print with left-offset
+            content = re.sub(r'\n{2,}', '\n.sp\n', escape(content))
+            content = textwrap.indent(content, prefix='.br\n')  # ensures newlines
+            self._stream.write(f'.sp\n.RS 2\n.EX\n\\fI\n{content}\n\\fP\n.EE\n.RE\n.sp\n')
+        else:  # prints with line-numbers
+            self._stream.write(f'.sp\n')
+            lines = content.splitlines()
+            num_width = len(lines) // 10
+            for i, line in enumerate(lines):
+                self._stream.write(f'{str(i+1).rjust(num_width)} | \\fI{escape(line)}\\fP\n.br\n')
+            self._stream.write(f'.sp\n')
 
     def _parse_hr(self, _node: markdown_it.tree.SyntaxTreeNode) -> None:
         character = "-" if self.ascii else "━"
