@@ -103,9 +103,9 @@ class Converter:
                 href = child.attrGet('href')
                 text = self._render_inline(node=child)
                 if href == text:
-                    chunks.append(escape(text))
+                    chunks.append(text)
                 else:
-                    chunks.append(f'\n.UR {href}\n{escape(text)}\n.UE')
+                    chunks.append(f'\n.UR {href}\n{text}\n.UE')
             elif child.type == 'image':
                 href = child.attrGet('src')
                 hyperref_re = re.compile(r'^\w+://')  # checks for http://, https://, data://, file://
