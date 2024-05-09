@@ -39,7 +39,7 @@ def __cmd__(source: str):
             if last_mtime != current_mtime:
                 last_mtime = current_mtime
 
-                pager_process.terminate()
+                pager_process.kill()
                 content = render_source()
                 update_tmpfile(content)
                 pager_process.wait()  # ensure pager_process died
