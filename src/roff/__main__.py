@@ -42,6 +42,13 @@ tree_parser.add_argument('source',
                          help="Markdown file that should be parsed")
 
 
+watch_parser = subparsers.add_parser('watch',
+                                     help="Start the manpage while automatically updating it. (experimental)")
+watch_parser.set_defaults(__cmd__=__cli__.watch.__cmd__)
+watch_parser.add_argument('source',
+                          help="Markdown file that should be parsed")
+
+
 def main():
     args = vars(parser.parse_args())
     cmd = args.pop('__cmd__')
