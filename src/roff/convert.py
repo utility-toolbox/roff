@@ -76,7 +76,7 @@ class Converter:
 
     def _parse_node(self, node: markdown_it.tree.SyntaxTreeNode) -> None:
         if not self._had_head and node.tag != 'h1':
-            raise SyntaxError("First element in the document should be the header")
+            raise SyntaxError(f"First element in the document should be the header. (got {node.type})")
         parser = getattr(self, f"_parse_{node.tag}", None)
         if parser is None:
             warnings.warn(f"Unsupported node tag '{node.tag}' of type '{node.type}'", RuntimeWarning)
