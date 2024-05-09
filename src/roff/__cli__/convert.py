@@ -9,6 +9,8 @@ from ..convert import Converter
 
 def __cmd__(source: str, dest: t.Optional[str]) -> None:
     source = Path(source)
+    if not source.is_file():
+        raise FileNotFoundError(f"Input file {source!s} does not exist")
 
     converter = Converter(fp=source)
 
