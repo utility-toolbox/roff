@@ -188,8 +188,8 @@ class Converter:
     def _parse_p(self, node: markdown_it.tree.SyntaxTreeNode) -> None:
         content = self._render_inline(node=node.children[0])
         content = re.sub(r'\n{2,}', '\n.sp\n', content)
-        # if node.level > 0:  # destroys the structure
-        #     self._stream.write('.P\n')
+        if node.level == 0:
+            self._stream.write('.P\n')
         self._stream.write(f'{content}\n')
 
     @staticmethod
