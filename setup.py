@@ -12,11 +12,13 @@ install_requires = ['markdown-it-py']
 
 images_requires = ['pillow']
 images_svg_requires = [*images_requires, 'cairosvg']
-all_requires = [images_requires, images_svg_requires]
+watch_requires = ['pypager']
+all_requires = [images_requires, images_svg_requires, watch_requires]
 
 extras_require = {
     'images': all_requires,
     'images-svg': all_requires,
+    'watch': watch_requires,
     'all': all_requires,
 }
 
