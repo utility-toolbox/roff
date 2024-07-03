@@ -20,6 +20,7 @@ python-based cli to convert markdown to the roff (man-pages) format
 pip install roff
 pip install roff[images]  # support for images
 pip install roff[images-svg]  # support for svg-images
+pip install roff[watch]  # support for rendering and auto-reloading a manpage while writing
 ```
 
 > [!TIP] 
@@ -28,11 +29,23 @@ pip install roff[images-svg]  # support for svg-images
 
 ## Usage/Execution
 
+For the common usage you can create a template markdown file with the `roff template` subcommand and then convert it to the roff-file-format with `roff convert`
+
 ```shell
 roff --help
 roff template command.1.md
 roff convert command.1.md
 man ./command.1
+```
+
+Additionally, if `roff[watch]` was installed, you can run `roff watch` to see the rendered file that automatically re-renders if the file-content changes.
+
+```shell
+# shell 1
+$ roff watch command.1.md
+# shell 2
+$ nano command.1.md
+$ vim command.1.md
 ```
 
 ## File Format
