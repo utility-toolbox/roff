@@ -21,7 +21,10 @@ def __cmd__(dest: str, *, yes: bool) -> None:
     manpage_area = next((int(sfx[1]) for sfx in dest.suffixes if sfx[1:].isdigit() and len(sfx) == 2), 1)
 
     with open(dest, 'w') as f:
-        f.write(fr"""{command}({manpage_area}) -- @DESCRIPTION
+        f.write(TEMPLATE.format(command=command, manpage_area=manpage_area))
+
+
+TEMPLATE = """{command}({manpage_area}) -- @DESCRIPTION
 =============================================
 
 ## SYNOPSIS
@@ -66,4 +69,4 @@ show the help message and exits
 
 ## SEE ALSO
 
-""")
+"""
