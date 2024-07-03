@@ -74,7 +74,12 @@ def __cmd__(root: str, parser: str) -> None:
 
     for section in ADDITIONAL_SECTIONS:
         stream.write(f"## {section}\n")
-        stream.write("\n\n")
+        section_key = section.lower().replace(" ", "_")
+        if hasattr(parser, section_key):
+            stream.write(textwrap.dedent(getattr(parser, section_key)).strip() + "\n")
+        else:
+            stream.write("\n")
+        stream.write("\n")
 
     print(stream.getvalue())
 
