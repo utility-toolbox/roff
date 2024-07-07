@@ -32,7 +32,7 @@ Support for all* Markdown features:
 - Images (rendered as braille-art | requires `roff[images]`)
 - Horizontal-Rule
 
-Note: to specify the parser for an executable module use the format 'module[.submodule].__main__[:variable]'.
+Note: to specify the parser for an executable module use the format '`module[.submodule].__main__[:variable]`'.
 
 ## OPTIONS
 
@@ -76,7 +76,7 @@ Root directory to the search the module in
 Output file name
 
 * $`parser`:
-Entrypoint-Specification to the parser. (Format: `module[.submodule][:variable]`')
+Entrypoint-Specification to the parser. (Format: '`module[.submodule][:variable]`')
 
 ### $`roff template`
 
