@@ -2,6 +2,7 @@
 r"""
 python-based cli to convert markdown to the roff (man-pages) format
 """
+import argparse
 import argparse as ap
 from . import __version__, __cli__
 
@@ -32,6 +33,8 @@ parser.epilog = ("Note: to specify the parser for an executable module use the f
                  " 'module[.submodule].__main__[:variable]'.")
 from_parser_parser.add_argument('--root', default=".",
                                 help="Root directory to the search the module in")
+from_parser_parser.add_argument('-o', '--output', default="-", type=argparse.FileType('w'),
+                                help="Output file name")
 from_parser_parser.add_argument('parser',
                                 help="Entrypoint-Specification to the parser."
                                      "(Format: 'module[.submodule][:variable]')")

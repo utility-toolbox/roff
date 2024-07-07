@@ -17,7 +17,7 @@ ADDITIONAL_SECTIONS: t.List[str] = ["CONFIGURATION", "ENVIRONMENT", "FILES", "VE
                                     "BUGS", "AUTHOR", "SEE ALSO"]
 
 
-def __cmd__(root: str, parser: str) -> None:
+def __cmd__(root: str, output: t.TextIO, parser: str) -> None:
     parser: argparse.ArgumentParser = load_parser(root=root, parser_spec=parser)
 
     stream = io.StringIO()
@@ -84,7 +84,7 @@ def __cmd__(root: str, parser: str) -> None:
             stream.write("\n")
         stream.write("\n")
 
-    print(stream.getvalue())
+    output.write(stream.getvalue())
 
 
 def load_parser(root: str, parser_spec: str) -> argparse.ArgumentParser:
