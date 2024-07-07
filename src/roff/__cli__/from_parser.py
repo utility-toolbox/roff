@@ -72,7 +72,7 @@ def __cmd__(root: str, output: t.TextIO, parser: t.Union[str, ArgumentParser]) -
             elif action.option_strings:
                 stream.write(f"* {', '.join(f'$`{opt}`' for opt in action.option_strings)}:\n")
             else:
-                stream.write(f"* {action.dest}:\n")
+                stream.write(f"* $`{action.dest}`:\n")
             if action.help:
                 stream.write(textwrap.dedent(action.help).strip() + "\n")
             stream.write("\n")
