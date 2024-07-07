@@ -4,6 +4,7 @@ r"""
 """
 from . import (
     convert,
+    from_parser,
     template,
     tree,
     watch,

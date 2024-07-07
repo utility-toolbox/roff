@@ -48,6 +48,14 @@ $ nano command.1.md
 $ vim command.1.md
 ```
 
+Additionally, if your project uses python `argparse.ArgumentParser` then you can start quicker by using the `roff from-parser` command instead of `roff template`.
+This works almost like the template command. But fills most of the fields.
+
+```shell
+$ roff from-parser --root src/ --output prog.1.md myprog.__main__:parser
+```
+
+
 ## File Format
 
 `roff` uses markdown as the file format. It supports all commonmark markdown features (h1 is reserved for the head).
@@ -66,6 +74,8 @@ $`command subcommand [--arg value] file...`
 
 ## Example
 
-The following image shows the manpage of roff itself 
+The following image shows the manpage of roff itself.
+
+<small>(The manpage-content is slightly outdated but still shows what roff can do)</small>
 
 ![example: manpage](https://github.com/utility-toolbox/roff/blob/main/README.assets/roff-manpage.png?raw=true)

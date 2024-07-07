@@ -2,71 +2,22 @@
 r"""
 
 """
+import typing as t
+import argparse as ap
 from pathlib import Path
+from .from_parser import __cmd__ as from_parser
 
 
 __all__ = ['__cmd__']
 
 
-def __cmd__(dest: str, *, yes: bool) -> None:
-    dest = Path(dest)
-    if not dest.parent.is_dir():
-        raise NotADirectoryError(f"parent directory '{dest.parent!s}' does not exist")
-    if dest.is_file() and not yes:
-        response = input(f"'{dest!s}' already exists. Do you want to overwrite it? [Y/n] ")
-        if response.lower() not in {'y', 'yes'}:
-            exit(0)
+def __cmd__(output: t.TextIO) -> None:
+    command = output.name.split('.', 1)[0]
+    if command == '<stdout>':
+        command = "@COMMAND"
+    manpage_area = next((int(sfx[1]) for sfx in Path(output.name).suffixes if sfx[1:].isdigit() and len(sfx) == 2), 1)
 
-    command = dest.name.split('.', 1)[0]
-    manpage_area = next((int(sfx[1]) for sfx in dest.suffixes if sfx[1:].isdigit() and len(sfx) == 2), 1)
+    parser = ap.ArgumentParser(prog=command, epilog="@DESCRIPTION", add_help=True)
+    parser.manpage_area = manpage_area
 
-    with open(dest, 'w') as f:
-        f.write(TEMPLATE.format(command=command, manpage_area=manpage_area))
-
-
-TEMPLATE = """{command}({manpage_area}) -- @DESCRIPTION
-=============================================
-
-## SYNOPSIS
-
-- $`{command} [-h]`
-
-## DESCRIPTION
-
-
-## OPTIONS
-
-<!--
-### `{command} <SUBCOMMAND>`
--->
-
-* `-h`, `--help`:
-show the help message and exits
-
-## CONFIGURATION
-
-
-## ENVIRONMENT
-
-
-## FILES
-
-
-## VERSIONS
-
-
-## NOTES
-
-
-## EXAMPLE
-
-
-## BUGS
-
-
-## AUTHOR
-
-
-## SEE ALSO
-
-"""
+    from_parser(root=".", output=output, parser=parser)
