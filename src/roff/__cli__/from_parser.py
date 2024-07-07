@@ -26,7 +26,9 @@ def __cmd__(root: str, parser: str) -> None:
 
     head_description = parser.description.strip().splitlines(keepends=False)[0] if parser.description else ''
 
-    stream.write(f"{parser.prog}(1) -- {head_description}\n")
+    manpage_area = getattr(parser, 'manpage_area', 1)
+
+    stream.write(f"{parser.prog}({manpage_area}) -- {head_description}\n")
     stream.write(f"{'=' * 45}\n")  # dunno why 45
     stream.write("\n")
 
@@ -51,8 +53,9 @@ def __cmd__(root: str, parser: str) -> None:
     stream.write("## OPTIONS\n")
     stream.write("\n")
     for subparser in subparsers:
-        stream.write(f"### $`{subparser.prog}`\n")
-        stream.write("\n")
+        if len(subparsers) != 1:  # 1 means only main-parser. we assume no subparsers
+            stream.write(f"### $`{subparser.prog}`\n")
+            stream.write("\n")
         if subparser.description:
             description = textwrap.dedent(subparser.description).strip()
             stream.write(textwrap.indent(description, "> ") + "\n")
