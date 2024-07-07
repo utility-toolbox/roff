@@ -44,9 +44,7 @@ from_parser_parser.add_argument('parser',
 template_parser = subparsers.add_parser('template',
                                         help="Generates a Markdown file that you can fill")
 template_parser.set_defaults(__cmd__=__cli__.template.__cmd__)
-template_parser.add_argument('-y', '--yes', action='store_true',
-                             help="Overwrite file if it exists")
-template_parser.add_argument('dest',
+template_parser.add_argument('output', default="-", type=argparse.FileType('w'),
                              help="Target file that should be generated")
 
 #

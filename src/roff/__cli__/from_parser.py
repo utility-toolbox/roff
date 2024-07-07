@@ -7,7 +7,7 @@ import sys
 import argparse
 import textwrap
 # noinspection PyUnresolvedReferences,PyProtectedMember
-from argparse import _SubParsersAction as SubParsersAction
+from argparse import _SubParsersAction as SubParsersAction, ArgumentParser
 import importlib
 import typing as t
 
@@ -17,8 +17,10 @@ ADDITIONAL_SECTIONS: t.List[str] = ["CONFIGURATION", "ENVIRONMENT", "FILES", "VE
                                     "BUGS", "AUTHOR", "SEE ALSO"]
 
 
-def __cmd__(root: str, output: t.TextIO, parser: str) -> None:
-    parser: argparse.ArgumentParser = load_parser(root=root, parser_spec=parser)
+def __cmd__(root: str, output: t.TextIO, parser: t.Union[str, ArgumentParser]) -> None:
+    if isinstance(parser, str):
+        parser = load_parser(root=root, parser_spec=parser)
+    parser: argparse.ArgumentParser
 
     stream = io.StringIO()
 
