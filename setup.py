@@ -16,8 +16,8 @@ watch_requires = ['pypager']
 all_requires = [images_requires, images_svg_requires, watch_requires]
 
 extras_require = {
-    'images': all_requires,
-    'images-svg': all_requires,
+    'images': images_requires,
+    'images-svg': images_svg_requires,
     'watch': watch_requires,
     'all': all_requires,
 }
