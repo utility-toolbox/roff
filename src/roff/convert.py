@@ -170,7 +170,7 @@ class Converter:
         ad_url = os.getenv('ROFF_CUSTOM_AD', default="") if os.getenv('ROFF_NO_AD') == 'yes' else "github.com/utility-toolbox/roff"
         self._stream.write(f'.TH "{command.upper()}" "{area}" "{date.today():%d %B %Y}" "{ad_url}"\n')
         self._stream.write(f'.SH "NAME"\n')
-        self._stream.write(f'\\fB{command}\\fP {"-" if self.ascii else "•"} {match.group("description")}\n')
+        self._stream.write(f'\\fB{command}\\fP - {match.group("description")}\n')
 
     def _parse_h2(self, node: markdown_it.tree.SyntaxTreeNode) -> None:
         self._stream.write(f'.SH "{self._render_inline(node=node.children[0])}"\n')
