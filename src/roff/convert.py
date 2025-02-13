@@ -167,7 +167,7 @@ class Converter:
 
         # Congratulations. This part is not documented.
         # You are probably here to hide this advertisement. Because I'm generous I'll make it easy for you
-        ad_url = "" if os.getenv('ROFF_NO_ADD') == 'yes' else "github.com/utility-toolbox/roff"
+        ad_url = os.getenv('ROFF_CUSTOM_AD', default="") if os.getenv('ROFF_NO_AD') == 'yes' else "github.com/utility-toolbox/roff"
         self._stream.write(f'.TH "{command.upper()}" "{area}" "{date.today():%d %B %Y}" "{ad_url}"\n')
         self._stream.write(f'.SH "NAME"\n')
         self._stream.write(f'\\fB{command}\\fP {"-" if self.ascii else "•"} {match.group("description")}\n')
@@ -269,7 +269,7 @@ class Converter:
         else:  # prints with line-numbers
             self._stream.write(f'.sp\n')
             lines = content.splitlines()
-            num_width = len(lines) // 10
+            num_width = len(lines) // 10 + 1
             for i, line in enumerate(lines):
                 self._stream.write(f'{str(i+1).rjust(num_width)} | \\fI{escape(line)}\\fP\n.br\n')
             self._stream.write(f'.sp\n')
