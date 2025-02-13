@@ -271,7 +271,7 @@ class Converter:
             lines = content.splitlines()
             num_width = len(lines) // 10 + 1
             for i, line in enumerate(lines):
-                self._stream.write(f'{str(i+1).rjust(num_width)} | \\fI{escape(line)}\\fP\n.br\n')
+                self._stream.write(f'\\{str(i+1).rjust(num_width)} | \\fI{escape(line)}\\fP\n.br\n')
             self._stream.write(f'.sp\n')
 
     def _parse_hr(self, _node: markdown_it.tree.SyntaxTreeNode) -> None:
