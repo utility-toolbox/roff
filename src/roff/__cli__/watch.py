@@ -8,11 +8,17 @@ import threading
 import traceback
 import subprocess
 from pathlib import Path
-import pypager
+try:
+    import pypager
+except ModuleNotFoundError:
+    pypager = None
 from ..convert import convert
 
 
 def __cmd__(source: str):
+    if pypager is None:
+        raise ModuleNotFoundError("pypager is not installed but required for the `roff watch` command")
+
     source = Path(source)
     if not source.is_file():
         raise FileNotFoundError(f"Input file {source!s} does not exist")
