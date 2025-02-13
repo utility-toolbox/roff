@@ -105,7 +105,7 @@ class Converter:
                 if href == text:
                     chunks.append(text)
                 else:
-                    chunks.append(f'\n.UR {href}\n{text}\n.UE')
+                    chunks.append(f'\n.UR {href}\n{text}\n.UE\n')
             elif child.type == 'image':
                 href = child.attrGet('src')
                 hyperref_re = re.compile(r'^\w+://')  # checks for http://, https://, data://, file://
