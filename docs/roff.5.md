@@ -122,6 +122,8 @@ In order to render image, roff requires to be installed with `roff[images]`, `ro
 
 ### Separator
 
+---
+
 ```markdown
 ---
 ```
