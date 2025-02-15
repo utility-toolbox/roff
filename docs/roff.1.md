@@ -122,17 +122,15 @@ Shows text content in the tree
 Markdown file that should be parsed
 
 ## BUGS
-
-https://github.com/utility-toolbox/roff/issues
+<https://github.com/utility-toolbox/roff/issues>
 
 ## AUTHOR
-
-https://github.com/PlayerG9
+<https://github.com/PlayerG9>
 
 ## SEE ALSO
 
 ### Organisation:
-https://github.com/utility-toolbox
+<https://github.com/utility-toolbox>
 
 ### Repository:
-https://github.com/utility-toolbox/roff
+<https://github.com/utility-toolbox/roff>

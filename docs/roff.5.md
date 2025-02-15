@@ -145,11 +145,9 @@ shows a help message and exists
 ````
 
 ## BUGS
-
 <https://github.com/utility-toolbox/roff/issues>
 
 ## AUTHOR
-
 <https://github.com/PlayerG9>
 
 ## SEE ALSO
