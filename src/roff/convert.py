@@ -102,10 +102,11 @@ class Converter:
                 chunks.append('\n.br\n')
             elif child.type == 'link':
                 href = child.attrGet('href')
-                text = self._render_inline(node=child)
-                if href == text:
-                    chunks.append(text)
+                raw_text = child.children[0].content if len(child.children) == 1 and child.children[0].type == 'text' else None
+                if href == raw_text:
+                    chunks.append(f'\n.UR {href}\n.UE ')
                 else:
+                    text = self._render_inline(node=child)
                     chunks.append(f'\n.UR {href}\n{text}\n.UE ')
             elif child.type == 'image':
                 href = child.attrGet('src')
