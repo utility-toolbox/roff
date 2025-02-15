@@ -10,10 +10,11 @@ __all__ = ['get_parser', 'escape']
 
 
 def get_parser() -> 'markdown_it.MarkdownIt':
-    from ._markdown import markdown_plugin_command
+    from ._markdown import markdown_plugin_command, markdown_plugin_front_matter
 
     parser = markdown_it.MarkdownIt()
     parser.use(markdown_plugin_command)
+    parser.use(markdown_plugin_front_matter)
     return parser
 
 

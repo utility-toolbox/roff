@@ -18,6 +18,7 @@ python-based cli to convert markdown to the roff (man-pages) format
 
 ```shell
 pip install roff
+pip install roff[front-matter]  # support for front-matter to configure roff
 pip install roff[images]  # support for images
 pip install roff[images-svg]  # support for svg-images
 pip install roff[watch]  # support for rendering and auto-reloading a manpage while writing
@@ -71,6 +72,8 @@ $`command subcommand [--arg value] file...`
 
 > [!TIP]
 > Use `roff template command.1.md` to get a pre-filled markdown file as a starting point.
+
+## Configuration
 
 ## Example
 

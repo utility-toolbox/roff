@@ -10,12 +10,14 @@ from roff import __author__, __version__, __description__, __license__
 
 install_requires = ['markdown-it-py']
 
+front_matter_requires = ['pyyaml']
 images_requires = ['pillow']
 images_svg_requires = [*images_requires, 'cairosvg']
 watch_requires = ['pypager']
-all_requires = [images_requires, images_svg_requires, watch_requires]
+all_requires = [front_matter_requires, images_requires, images_svg_requires, watch_requires]
 
 extras_require = {
+    'front-matter': front_matter_requires,
     'images': images_requires,
     'images-svg': images_svg_requires,
     'watch': watch_requires,

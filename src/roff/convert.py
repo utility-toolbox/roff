@@ -13,6 +13,10 @@ import markdown_it.tree
 from . import __version__
 from ._util import *
 from ._images import render_image
+try:
+    import yaml
+except ModuleNotFoundError:
+    yaml = None
 
 
 __all__ = ['convert', 'Converter']
@@ -38,7 +42,7 @@ class Converter:
     # yes. I know that 80 won't fit the default terminal size of 80 because the section offset
     width: int = int(os.getenv('ROFF_WIDTH', 80))
     ascii: bool = os.getenv('ROFF_ASCII', "no").lower() in {"yes", "true", "1"}
-    tab_size: int = int(os.getenv('ROFF_TABSIZE', 4))
+    tabsize: int = int(os.getenv('ROFF_TABSIZE', 4))
 
     def __init__(self, fp: t.Union[str, os.PathLike]) -> None:
         self._stream = io.StringIO()
@@ -65,6 +69,28 @@ class Converter:
     def getvalue(self) -> str:
         return self._stream.getvalue()
 
+    def _apply_front_matter(self, raw_front_matter: str):
+        if yaml is None:
+            raise RuntimeError(f"front-matter found in document but dependencies are missing")
+        data = yaml.safe_load(raw_front_matter)
+        if not isinstance(data, dict):
+            raise TypeError(f"front-matter is not a mapping")
+        if 'width' in data:
+            width = data['width']
+            if not isinstance(width, int):
+                raise TypeError('front-matter - width is not an integer')
+            self.width = width
+        if 'ascii' in data:
+            use_ascii = data['ascii']
+            if not isinstance(use_ascii, bool):
+                raise TypeError('front-matter - ascii is not an boolean')
+            self.ascii = use_ascii
+        if 'tabsize' in data:
+            tabsize = data['tabsize']
+            if not isinstance(tabsize, int):
+                raise TypeError('front-matter - tabsize is not an integer')
+            self.tabsize = tabsize
+
     def _add_head(self):
         self._stream.write(f".\\\" generated with roff/v{__version__}\n")
         self._stream.write(f".\\\" https://pypi.org/project/roff/{__version__}\n")
@@ -76,6 +102,9 @@ class Converter:
             self._parse_node(node=child)
 
     def _parse_node(self, node: markdown_it.tree.SyntaxTreeNode) -> None:
+        if node.type == 'front_matter':
+            self._apply_front_matter(node.content)
+            return
         if not self._had_head and node.tag != 'h1':
             raise SyntaxError(f"First element in the document should be the header. (got {node.type})")
         parser = getattr(self, f"_parse_{node.tag}", None)
@@ -262,7 +291,7 @@ class Converter:
         self._stream.write(f'.RE\n.sp\n')
 
     def _parse_code(self, node: markdown_it.tree.SyntaxTreeNode) -> None:
-        content = node.content.expandtabs(self.tab_size).strip()
+        content = node.content.expandtabs(self.tabsize).strip()
         content = textwrap.dedent(content)  # left-align
         if node.info in {'', 'text', 'txt'}:  # print with left-offset
             content = re.sub(r'\n{2,}', '\n.sp\n', escape(content))
