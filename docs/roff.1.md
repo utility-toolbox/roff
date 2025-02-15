@@ -121,6 +121,38 @@ Shows text content in the tree
 * `source`:
 Markdown file that should be parsed
 
+## EXIT STATUS
+
+- `0`:
+Successful program execution
+
+- `1`:
+Any error
+
+## ENVIRONMENT
+
+### ROFF_WIDTH
+
+This defines the width of rendering elements such as images or a separator.
+
+- Default: `80`
+- Type: integer
+
+### ROFF_ASCII
+
+Defines if only ascii characters should be used during rendering.
+(e.g. separator)
+
+- Default: `false`
+- Type: boolean
+
+### ROFF_TABSIZE
+
+When rendering code. This option defines into how many spaces a tab-character is expanded.
+
+- Default: `4`
+- Type: integer
+
 ## BUGS
 <https://github.com/utility-toolbox/roff/issues>
 
@@ -128,6 +160,9 @@ Markdown file that should be parsed
 <https://github.com/PlayerG9>
 
 ## SEE ALSO
+
+### Other Man-Pages
+roff(5)
 
 ### Organisation:
 <https://github.com/utility-toolbox>

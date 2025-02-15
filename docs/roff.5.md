@@ -9,6 +9,30 @@ This document is about the .md file-specification
 
 > Use $`roff template 'command.1.md'` or $`roff from-parser 'file.py:arg_parser'` to get a template as a starting point.
 
+
+## CONFIGURATION
+
+There are two ways to configure the behavior of roff.
+For more detailed information about the options see the ENVIRONMENT section in roff(1).
+
+### With Environment Variables
+
+The first option is to set environment variables. These variables are prefixed with `ROFF_` (e.g. `ROFF_WIDTH`).
+
+### With Front-Matter
+
+The second option is to add a [front-matter](#front-matter) to your document.
+
+e.g.
+
+```markdown
+---
+width: 60
+---
+command(1) -- description
+=========================
+```
+
 ## FILES
 
 Input files should follow the naming convention of `[command].[area].md` (e.g. `roff.1.md`)
@@ -16,6 +40,22 @@ Input files should follow the naming convention of `[command].[area].md` (e.g. `
 Output files should follow the naming convention of `[command].[area]` (e.g. `roff.1`)
 
 ## ELEMENTS
+
+### Front-Matter
+
+The Front-Matter is used to [configure `roff`'s behavior](#configuration).
+
+In order to add a front-matter you have to place it at the start of your document.
+The Front-Matter starts and ends with a `---`.
+Everything in between is yaml.
+
+```markdown
+---
+width: 60
+---
+command(1) -- description
+=========================
+```
 
 ### Document Head
 
@@ -44,8 +84,7 @@ The section name should also be in uppercase.
 
 ### Subsections
 
-As with [sections](#sections), a subsection should also be written in uppercase.
-Otherwise, you are free to label them as you like.
+You are free to label them as you like.
 
 ```markdown
 ### SUBSECTION
@@ -128,8 +167,6 @@ In order to render image, roff requires to be installed with `roff[images]`, `ro
 ---
 ```
 
-[//]: # (## NOTES)
-
 ## EXAMPLE
 
 ````markdown
@@ -153,6 +190,9 @@ shows a help message and exists
 <https://github.com/PlayerG9>
 
 ## SEE ALSO
+
+### Other Man-Pages
+roff(1)
 
 ### Organisation
 <https://github.com/utility-toolbox>
