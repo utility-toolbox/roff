@@ -38,6 +38,7 @@ class Converter:
     # yes. I know that 80 won't fit the default terminal size of 80 because the section offset
     width: int = int(os.getenv('ROFF_WIDTH', 80))
     ascii: bool = os.getenv('ROFF_ASCII', "no").lower() in {"yes", "true", "1"}
+    tab_size: int = int(os.getenv('ROFF_TABSIZE', 4))
 
     def __init__(self, fp: t.Union[str, os.PathLike]) -> None:
         self._stream = io.StringIO()
@@ -260,7 +261,7 @@ class Converter:
         self._stream.write(f'.RE\n.sp\n')
 
     def _parse_code(self, node: markdown_it.tree.SyntaxTreeNode) -> None:
-        content = node.content.expandtabs(4).strip()
+        content = node.content.expandtabs(self.tab_size).strip()
         content = textwrap.dedent(content)  # left-align
         if node.info in {'', 'text', 'txt'}:  # print with left-offset
             content = re.sub(r'\n{2,}', '\n.sp\n', escape(content))
