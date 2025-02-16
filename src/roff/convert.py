@@ -210,9 +210,10 @@ class Converter:
         self._stream.write(f'.SS "{self._render_inline(node=node.children[0])}"\n')
 
     def _parse_h4(self, node: markdown_it.tree.SyntaxTreeNode) -> None:
+        # todo: replace with `.HP i`?
         self._stream.write(f'.sp\n{self._render_inline(node=node.children[0])}\n.sp\n')
 
-    # maybe not the best solution
+    # todo: maybe not the best solution
     _parse_h5 = _parse_h4
     _parse_h6 = _parse_h4
 
@@ -227,62 +228,62 @@ class Converter:
     def _check_newline(text: str) -> bool:
         r""" checks the output of _render_inline if it won't fit into one line """
         return (
-            # len(text) >= self.width  # won't fit in one line (good in theory. bad in praxis)
             '\n.br\n' in text  # line-break
             or '\n.sp\n' in text  # vertical space
         )
 
-    def _check_inline_text_list(self, node: markdown_it.tree.SyntaxTreeNode) -> bool:
-        r""" Better do not touch this function. It's a mess. But at least it works """
-        assert node.tag in {'ul', 'ol'}
-        return all((
-            (len(li.children)  # any children
-             and li.children[0].type == 'paragraph'  # first is paragraph
-             and len(li.children[0].children) == 1  # with one child
-             and li.children[0].children[0].type == 'inline'  # which is inline
+    def _check_first_child_clean_inline(self, children: t.List[markdown_it.tree.SyntaxTreeNode]) -> bool:
+        r""" Better do not touch this function. It's a mess. But at least it works. """
+        return (
+            (len(children)  # any children
+             and children[0].type == 'paragraph'  # first is paragraph
+             and len(children[0].children) == 1  # with one child
+             and children[0].children[0].type == 'inline'  # which is inline
              and not self._check_newline(
-                        self._render_inline(node=li.children[0].children[0])  # and not over multiple lines
-            )) for li in node.children
-        ))
+                        self._render_inline(node=children[0].children[0])  # and not over multiple lines
+            ))
+        )
 
     def _parse_ul(self, node: markdown_it.tree.SyntaxTreeNode) -> None:
         r""" unordered list """
-        deep = node.level > 0
-        self._stream.write('.br\n' if deep else '.sp\n')
         bullet = '*' if self.ascii else '•'
-        if self._check_inline_text_list(node=node):
-            for list_item in node.children:
-                head, *body = list_item.children
-                self._stream.write(f'{bullet} {self._render_inline(head.children[0])}\n.br\n')
-                if body:
-                    self._stream.write('.RS 2\n')
-                    self._parse_children(children=body)
-                    self._stream.write('.RE\n')
-        else:
-            for list_item in node.children:
-                self._stream.write(f'{bullet}\n.RS 2\n')
-                self._parse_children(children=list_item.children)
+        for list_item in node.children:
+            children = list_item.children
+            if self._check_first_child_clean_inline(children=children):
+                head, *children = children
+                self._stream.write(f'.PD 0\n')  # don't add an empty line above paragraphs
+                self._stream.write(f'.IP {bullet} 2\n')
+                self._stream.write(f'{self._render_inline(head.children[0])}\n')
+                self._stream.write(f'.PD\n')  # put an empty above paragraphs again
+            else:
+                self._stream.write(f'{bullet}\n.br\n')
+            if children:
+                self._stream.write(f'.RS 2\n')
+                self._parse_children(children=children)
                 self._stream.write(f'.RE\n')
-        self._stream.write('.br\n' if deep else '.sp\n')
+        if node.level == 0:
+            self._stream.write('.sp\n')
 
     def _parse_ol(self, node: markdown_it.tree.SyntaxTreeNode) -> None:
         r""" ordered list """
-        deep = node.level > 0
-        self._stream.write('.br\n' if deep else '.sp\n')
-        if self._check_inline_text_list(node=node):
-            for i, list_item in enumerate(node.children):
-                head, *body = list_item.children
-                self._stream.write(f'{i+1}. {self._render_inline(head.children[0])}\n.br\n')
-                if body:
-                    self._stream.write('.RS 2\n')
-                    self._parse_children(children=body)
-                    self._stream.write('.RE\n')
-        else:
-            for i, list_item in enumerate(node.children):
-                self._stream.write(f'{i+1}.\n.RS 2\n')
-                self._parse_children(children=list_item.children)
+        off = len(node.children) // 10 + 1
+        indent = 2 + off
+        for i, list_item in enumerate(node.children):
+            children = list_item.children
+            if self._check_first_child_clean_inline(children=children):
+                head, *children = children
+                self._stream.write(f'.PD 0\n')  # don't add an empty line above paragraphs
+                self._stream.write(f'.IP {i+1}. {indent}\n')
+                self._stream.write(f'{self._render_inline(head.children[0])}\n')
+                self._stream.write(f'.PD\n')  # put an empty above paragraphs again
+            else:
+                self._stream.write(f'{i+1}.\n.br\n')
+            if children:
+                self._stream.write(f'.RS {indent}\n')
+                self._parse_children(children=children)
                 self._stream.write(f'.RE\n')
-        self._stream.write('.br\n' if deep else '.sp\n')
+        if node.level == 0:
+            self._stream.write('.sp\n')
 
     def _parse_blockquote(self, node: markdown_it.tree.SyntaxTreeNode) -> None:
         # todo: prefix each line with '|' somehow
