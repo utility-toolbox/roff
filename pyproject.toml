@@ -1,3 +1,68 @@
 [build-system]
 requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "roff"
+description = "python-based cli to convert markdown to the roff (man-pages) format"
+readme = "README.md"
+license = { text = "GPLv3" }
+requires-python = ">3.6"
+dependencies = [
+    "markdown-it-py",
+]
+optional-dependencies.front-matter = [
+    "pyyaml",
+]
+optional-dependencies.images = [
+    "pillow",
+]
+optional-dependencies.images-svg = [
+    "pillow",
+    "cairosvg",
+]
+optional-dependencies.watch = [
+    "pypager"
+]
+dynamic = [
+    "version"
+]
+keywords = [
+
+]
+classifiers = [
+    "Intended Audience :: Developers",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Utilities",
+]
+
+[project.urls]
+"Organisation GitHub" = "https://github.com/utility-toolbox"
+"Homepage" = "https://github.com/utility-toolbox/roff/"
+"Bug Tracker" = "https://github.com/utility-toolbox/roff/issues"
+
+[project.scripts]
+roff = "roff.__main__:main"
+
+[tool.setuptools]
+include-package-data = false
+package-dir = { "" = "src" }
+
+[tool.setuptools.dynamic]
+version = { attr = "roff.__version__" }
+
+[tool.setuptools.data-files]
+"man/man1" = ["docs/roff.1"]
+"man/man5" = ["docs/roff.5"]
