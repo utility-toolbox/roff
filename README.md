@@ -30,7 +30,9 @@ pip install roff[watch]  # support for rendering and auto-reloading a manpage wh
 
 ## Usage/Execution
 
-For the common usage you can create a template markdown file with the `roff template` subcommand and then convert it to the roff-file-format with `roff convert`
+> For more details inspect the manpage (`man roff.1`) to see all commands with their options.
+
+For the common usage you can create a template markdown file with the `roff template` subcommand and then convert it to the roff-file-format with `roff convert`.
 
 ```shell
 roff --help
@@ -50,7 +52,10 @@ $ vim command.1.md
 ```
 
 Additionally, if your project uses python `argparse.ArgumentParser` then you can start quicker by using the `roff from-parser` command instead of `roff template`.
-This works almost like the template command. But fills most of the fields.
+This works almost like the template command, but fills most of the fields.
+
+> [!WARNING]
+> `from-parser` will import the parser from your specified file/module. Which means that the code will be run! Use with care!
 
 ```shell
 $ roff from-parser --root src/ --output prog.1.md myprog.__main__:parser
@@ -58,6 +63,8 @@ $ roff from-parser --root src/ --output prog.1.md myprog.__main__:parser
 
 
 ## File Format
+
+> For more details inspect the manpage (`man roff.5`) to see all file specifications.
 
 `roff` uses markdown as the file format. It supports all commonmark markdown features (h1 is reserved for the head).
 
@@ -75,10 +82,14 @@ $`command subcommand [--arg value] file...`
 
 ## Configuration
 
+Roff has multiple configuration options for a more customized experience.
+Details about these options can be inspected via the manpage (`man roff.1`).
+These options are only needed for a fine-tuned experience. For most users roff should work out of the box.
+
 ## Example
 
 The following image shows the manpage of roff itself.
 
-<small>(The manpage-content is slightly outdated but still shows what roff can do)</small>
+<small>(The manpage-content might be slightly outdated but still shows what roff can do)</small>
 
 ![example: manpage](https://github.com/utility-toolbox/roff/blob/main/README.assets/roff-manpage.png?raw=true)

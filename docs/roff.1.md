@@ -32,8 +32,6 @@ Support for all* Markdown features:
 - Images (rendered as braille-art | requires `roff[images]`)
 - Horizontal-Rule
 
-Note: to specify the parser for an executable module use the format '`module[.submodule].__main__[:variable]`'.
-
 ## OPTIONS
 
 $`roff [-h] [-v] [--list-areas] {convert,from-parser,template,tree,watch} ...`
@@ -77,6 +75,8 @@ Output file name
 
 * $`parser`:
 Entrypoint-Specification to the parser. (Format: '`module[.submodule][:variable]`')
+
+Note: to specify the parser for an executable module use the format '`module[.submodule].__main__[:variable]`'.
 
 ### $`roff template`
 
@@ -143,6 +143,8 @@ This defines the width of rendering elements such as images or a separator.
 Defines if only ascii characters should be used during rendering.
 (e.g. separator)
 
+> Note: This configures only by roff generated characters. Not the ones in your file!
+
 - Default: `false`
 - Type: boolean
 
@@ -157,7 +159,7 @@ When rendering code. This option defines into how many spaces a tab-character is
 <https://github.com/utility-toolbox/roff/issues>
 
 ## AUTHOR
-<https://github.com/PlayerG9>
+<https://github.com/Barakudum>
 
 ## SEE ALSO
 

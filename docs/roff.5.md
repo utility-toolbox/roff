@@ -187,7 +187,7 @@ shows a help message and exists
 <https://github.com/utility-toolbox/roff/issues>
 
 ## AUTHOR
-<https://github.com/PlayerG9>
+<https://github.com/Barakudum>
 
 ## SEE ALSO
 
