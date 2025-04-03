@@ -6,7 +6,8 @@ build-backend = "setuptools.build_meta"
 name = "roff"
 description = "python-based cli to convert markdown to the roff (man-pages) format"
 readme = "README.md"
-license = { text = "GPLv3" }
+license = "GPL-3.0-or-later"
+#license-files = ["LICENSE"]
 requires-python = ">3.6"
 dependencies = [
     "markdown-it-py",
